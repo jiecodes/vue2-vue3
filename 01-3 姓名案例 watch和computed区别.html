@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+</head>
+<body>
+  同步任务用 计算属性   异步任务用 watch
+  计算属性不能开启异步任务维护数据
+
+  vue管理的函数 最好写成普通函数 这样this指向vm
+  不被vue管理的函数 写成箭头函数 
+  <div class="root">
+    性 <input type="text" v-model="firstName"> <br>
+    名 <input type="text" v-model="lastName"> <br>
+    全名 {{fullName}}
+  </div>
+  <script>
+    const vm = new Vue({
+      el: '.root',
+      data: {
+        firstName: 'ni',
+        lastName: 'hao',
+        fullName: null,
+      },
+      watch: {
+        // 简写
+        // firstName(newValue, oldValue) {
+        //   this.fullName = newValue + '-' + this.lastName
+        // }
+        firstName: {
+          handler(newValue, oldValue) {
+            setTimeout(() => {
+              this.fullName = newValue + '-' + this.lastName
+            }, 1000);
+          }
+        },
+        lastName: {
+          handler(newValue, oldValue) {
+            this.fullName = this.firstName + '-' + newValue
+          }
+        }
+      },
+      // computed: {
+      //   fullName() {
+      //     // 计算属性添加定时器 返回的就是 undefined    计算属性只能返回 return
+      //     // setTimeout(() => {
+      //       // return this.firstName + this.lastName
+      //     // }, 1000);
+      //     // return 100
+      //   }
+      // }
+    })
+     
+  </script>
+</body>
+</html>

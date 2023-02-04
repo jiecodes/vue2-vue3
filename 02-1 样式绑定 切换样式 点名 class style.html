@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+</head>
+<body>
+  <style>
+    .base {
+      width: 100px;
+      height: 100px;
+      background-color: hotpink;
+    }
+    .happy {
+      background-color: red;
+    }
+    .sad {
+      background-color: green;
+    }
+    .normal {
+      background-color: blue;
+    }
+  </style>
+  <div class="app">
+    <!-- 字符串写法 样式类名不确定,需要动态指定 -->
+    <div class="base" :class="mood" @click="change">{{msg}}</div> <br>
+    <!-- 数组写法 绑定的样式个数不确定,名字也不确定  在浏览器输出台,输入vm.classArr.shift()删除第一个 vm.classArr.push('a')添加class属性 -->
+    <div class="base" :class="classArr" @click="change">{{msg}}</div> <br>
+    <!-- 对象写法 样式,名字确定 动态决定用不用 -->
+    <div class="base" :class="classObj" @click="change1">{{msg}}</div>
+    
+    <!-- style 对象 -->
+    <div :style="styleObj">1</div>
+    <!-- style 数组 -->
+    <div :style="[styleObj, styleObj1]">v</div>
+    <div :style="styleArr">v</div>
+  </div>
+  <script>
+    const vm = new Vue({
+      el: '.app',
+      data: {
+        mood: 'happy',
+        flag: false,
+        timer: null,
+        msg: '点击 进行点名',
+        classArr: ['happy', 'sad', 'normal'],
+        classObj: {
+          happy: false,
+          sad: false,
+        },
+        styleObj: {
+          fontSize: '50px'
+        },
+        styleObj1: {
+          color: 'skyblue',
+        },
+        styleArr: [
+          {
+            color: 'blue',
+          },
+          {
+            fontSize: '20px',
+          }
+        ],
+      },
+      methods: {
+        // 改变 class对象里面的属性 取反
+        change1() {
+          this.classObj.happy = !this.classObj.happy 
+        },
+        change() {
+          const arrs = ['happy', 'sad', 'normal']
+          // 随机数0-1    floor向下取整 取最小数
+          const index = Math.floor(Math.random() * arrs.length)
+          // 根据 随机数的索引号 切换mood的值
+          this.mood = arrs[index]
+
+          // 点名
+          const arr = ["刘一","张三","李四","刘二","王五","刘七"]
+          const index1 = Math.floor(Math.random() * 6)
+          this.msg = arr[index1]
+          this.flag = !this.flag
+          if (this.flag) {
+            this.timer = setInterval(() => {
+            // 0-6 索引号 随机数
+            const index1 = Math.floor(Math.random() * arr.length)
+            this.msg = arr[index1]
+            console.log('...')
+            }, 100);
+          } else {
+            clearInterval(this.timer)
+          }
+        },
+      }
+    })
+  </script>
+</body>
+</html>

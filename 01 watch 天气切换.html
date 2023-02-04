@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+</head>
+<body>
+  <div class="root">
+    <h2>{{ weather }}</h2>
+    <button @click="change">切换</button>
+  </div>
+  <script>
+    Vue.config.productionTip = false      // 阻止vue在启动时生成的生产提示
+
+    const vm = new Vue({
+      el: '.root',
+      data: {
+        isShow: false,
+        hot: '热',
+        cold: '冷',
+      },
+      methods: {
+        change() {
+          this.isShow = !this.isShow
+        }
+      },
+      computed: {
+        weather() {
+          return this.isShow ? this.hot : this.cold
+        }
+      },
+      // watch: {
+      //   isShow: {
+      //     immediate: true,    // 开始时调用
+      //     handler(newa, old) {
+      //       console.log('.')
+      //     }
+      //   }
+      // },
+
+    })
+    vm.$watch('isShow', {
+      immediate: true,    // 开始时调用
+      handler(newa, old) {
+        console.log('.' + newa + '\n' + old)
+      }
+    })
+  </script>
+</body>
+</html>

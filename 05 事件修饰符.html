@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+<body>
+  <!-- .prevent 阻止默认行为
+  .stop 阻止冒泡
+  .once 事件只触发一次
+  .capture 使用事件捕获行为
+  .self 只当在 event.target 是当前元素自身时触发处理函数 也会阻止冒泡
+  .passive 事件默认行为立即执行、无需等待事件回调完毕 
+  .native 组件可以绑定原生dom事件  -->
+  <div class="app">
+    <a href="http://www.baidu.com" @click.prevent="showInfo">阻止默认行为 </a href="www.baidu.com">
+    <div @click="showInfo">
+      <div @click.stop="showInfo">阻止冒泡 .stop</div>
+    </div>
+    <button @click.once="showInfo">事件触发一次 .once</button>
+    <!-- 点击div2 先打印div2后打印div1 这是冒泡   添加捕获后打印相反 -->
+    <div @click.capture="capture(1)" style="height: 50px; background-color: red;">div1 给父盒子加捕获
+      <div @click="capture(2)" style="background-color: skyblue;">div2</div>
+    </div>
+    <!-- 事件默认行为立即执行、无需等待事件回调完毕 滚动条在事件执行完毕后才会滚动,添加.passive事件没有执行完滚动条就会滚动 -->
+    <ul @scroll="scroll" @wheel.passive="wheel" style="height: 200px; background-color: hotpink; overflow: auto;">
+      <li style="height: 70px; background-color: skyblue;">1</li>
+      <li style="height: 70px; background-color: skyblue;">2</li>
+      <li style="height: 70px; background-color: skyblue;">3</li>
+      <li style="height: 70px; background-color: skyblue;">4</li>
+    </ul>
+  </div>
+  <script>
+    new Vue({
+      el: '.app',
+      methods: {
+        showInfo(e){
+          // 原生 自带的属性
+          // e.preventDefault();   // 阻止默认行为
+          // e.stopPropagetion();      // 阻止冒泡
+          console.log(e)
+        },
+        capture(e) {
+          console.log(e)
+        },
+        scroll(e) {
+          console.log(e + '滚动 拖动进度条')
+        },
+        wheel(e) {
+          for (let i = 0;i < 1000; i++) {
+            console.log('1')
+          }
+          console.log(e + '上下滚动 鼠标滚轮')
+        }
+      }
+    })
+  </script>
+</body>
+</html>

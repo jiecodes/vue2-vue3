@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <!-- alt + b 打开就好
+  console操作 
+  p perosn p.name = '张三1' -->
+  <script>
+    // 源数据
+    let person = ({
+      name: '张三',
+      age: 12,
+    })
+    
+    // 模拟vue2实现的响应式原理
+    // let p = {};
+    // vue2 实现响应式原理
+    //#region
+    // p 在p对象追加属性  "name" 追加什么属性  {}函数
+    // Object.defineProperty(p, 'name', {
+    //   configurable: true, // 可配置的     就可以执行 deltet p.name 但是不是响应式的
+    //   // 读取name调用
+    //   get() {
+    //     return person.name
+    //   },
+    //   // 修改name调用
+    //   set(value) {
+    //     console.log('vue中的set监听到了数据的修改 使页面更新')
+    //     person.name = value
+    //   },
+    // })
+    // Object.defineProperty(p, 'age', {
+      // 读取age调用
+    //   get() {
+    //     return person.age
+    //   },
+    //   // 修改age调用
+    //   set(value) {
+    //     console.log('vue中的set监听到了数据的修改 使页面更新')
+    //     person.age = value
+    //   },
+    // })
+    //#endregion
+    
+    // vue3 实现响应式原理
+    //#region
+    // console操作 p.name 输出console
+    // let p = new Proxy(person, {
+    //   // 读取   target 表示person    propName 修改的属性名字   p.name
+    //   get(target,propName) {
+    //     console.log('读取了p上的某个属性',`${propName}`, target, propName,)
+    //     // return 100   对象读取属性 a[b]
+    //     return target[propName]
+    //   },
+    //   // 修改 追加某个属性调用   p.name = 'aaa'
+    //   set(target,propName,value) {
+    //     console.log('修改了p上的某个属性',`${propName}`, target, propName,)
+    //     target[propName] = value
+    //   },
+    //   // 删除   delete p.name
+    //   deleteProperty(target, propName) {
+    //     console.log(`删除了p上的${propName}属性`,target, propName)
+    //     delete target[propName]
+    //   }
+    // })
+    //#endregion
+
+    // 实现原理、
+    let obj = {a:1, b:2}
+    // 给 obj 追加一个c属性
+    Object.defineProperty('obj', 'c', {
+      get() {
+        return 3
+      }
+    })
+    // Reflect和Object相似
+    // Reflect.defineProperty('obj', 'c', {
+    //   get() {
+    //     return 3
+    //   }
+    // })
+
+  </script>
+</body>
+</html>

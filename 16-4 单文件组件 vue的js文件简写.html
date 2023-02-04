@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+</head>
+<body>
+  单文件组件(vue文件)   
+  浏览器不能解析vue文件     可以借助 webpack 或者 脚手架(vue团队配置好 可以解析vue文件)解析
+  vue文件的名字 开头字母大写 vue一般会解析成开头字母大写
+
+  导出js组件
+  <script>
+    const school = Vue.extend({
+      data() {
+        return {
+          msg: '.',
+        }
+      },
+      methods: {},
+    })
+    // 默认导出     导入: import school from school
+    export default school
+  </script>
+  
+  简写: 导出
+  <script>
+    // 默认导出 Vue.extend     导入: import school from school
+    export default Vue.extend({
+      data() {
+        return {
+          msg: '.',
+        }
+      },
+      methods: {},
+    })
+  </script>
+  
+  简写1: 导出
+  <script>
+    // Vue.extend 可以省略 直接导出js     导入: import school from school
+    export default({
+      // name: '文件名',
+      data() {
+        return {
+          msg: '.',
+        }
+      },
+      methods: {},
+    })
+  </script>
+
+
+
+
+
+</body>
+</html>

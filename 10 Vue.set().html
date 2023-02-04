@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+<body>
+  如果一个数据是响应式的 在控制台参数这个数据 有get() set()属性
+  点击修改数据后 数据已经修改了 但是vue并没有检测到 页面没有改变
+  响应式的数据(数据改变,页面的数据也改变) vm._data中必须有get() set()
+  Vue.set() 不能修改 vm 和 vm.data中的数据
+
+  不能通过索引值修改数据 使页面改变 因为vm中的数据中 索引值[0]没有get() set()
+
+  <!-- console -->
+  vm._data.student.hobby.push = Array.prototype.push
+
+
+  // console 页面输入这个 不是响应式的
+  // vm._data.student.sex === 'nan'
+  // 索引值修改 不是响应式的
+  // vm._data.student[0] = '11'
+
+  // console 响应式的修改 可以通过 Vue
+  // Vue.set(vm._data.student,'sex','nan')
+  // vm.$set(vm._data.student,'sex','nan')
+  这些方法vue包裹过 可以修改数据 页面响应
+    push()
+    pop()
+    shift()
+    unshift()
+    splice()
+    sort()
+    reverse()
+  
+
+<div class="app">
+  <div>{{student.name}}</div>
+  <div>{{student.age}}</div>
+  <div v-if="student.sex">性别: {{student.sex}}</div>
+  <div v-else>11</div>
+  <button @click="addSex">添加性别</button>
+  <div v-for="item in person" :key="item.id">{{item}}</div>
+  <button @click="addPerson">添加字符串 修改字符串</button>
+  <button @click='remove'>过滤掉dd 页面也改变</button>
+</div>
+<script>
+  let vm = new Vue({
+    el: '.app',
+    data: {
+      student: {
+        name: 'andy',
+        age: 12,
+      },
+      person: ['打','da','dd']
+    },
+    methods: {
+      addPerson() {
+        // 响应式的 数据改变 页面也改变
+        this.person.unshift('aaa')
+        this.person.splice(0,1,'b')
+      },
+      addSex() {
+        // 动态修改页面数据 数据改变页面也改变
+        Vue.set(this._data.student,'sex','nan')
+        // Vue.set(this.student,'sex','nan')
+        
+        // vm.$set(vm._data.student,'sex','nan')
+        // 代码化 上面一行代码
+        // this.$set(this.student, 'sex', 'nan')
+      },
+      changeInfo() {
+        console.log(vm)
+      },
+      remove() {
+        this.person = this.person.filter(item => {    // filter 返回新数组 不影响旧数组
+          return item !== 'dd'
+        })
+      }
+    },  
+  })
+</script>
+
+
+
+</body>
+</html>

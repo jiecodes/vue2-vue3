@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+</head>
+<body>
+  单文件组件 一个vue文件
+  非单文件组件 一个html文件
+
+  Vue中使用组件的三大步骤
+    一、定义组件(创建组件)
+    二、注册组件
+    三、使用组件(写组件标签)
+  一、如何定义一个组件？
+    使用Vue.extend(options)创建，其中options和new Vue(options)时传入的那个options几乎一样，但也有点区别
+      区别如下:
+        1.el不要写，为什么？— 最终所有的组件都要经过一个vm的管理，由vm中的el决定服务哪个容器。
+        2.data必须写成函数，为什么？—避免组件被复用时，数据存在引用关系。
+      备注：使用template可以配置组件结构。
+  二、如何注册组件？
+    1.局部注册:靠new Vue的时候传入components选项
+    2.全局注册:靠Vue.component('组件名',组件)
+  三、编写组件标签：
+    <school></school>
+
+  组件注意: 一个简写方式:
+    const school = Vue.extend(options) 简写为: const school = options
+
+
+
+  <div class="app">
+    <div>父组件 {{msg}}</div>
+    <!-- 3 使用组件 -->
+    <xuexiao></xuexiao>
+    <hr>
+    <xuesheng></xuesheng>
+    <hr> app组件管理所有自定义组件
+    <app></app>
+  </div>
+
+  <div class="app1">
+    <hr>
+    <hello></hello>
+  </div>
+
+  <script>
+    // 1 准备组件
+    const school = Vue.extend({
+      template: `
+      <div>
+        <div>学校 {{schoolName}}</div>
+        <div>学校 {{address}}</div>
+        <button @click="showName">提示信息</button>
+      </div>
+      `,
+      data() {
+        return {
+          schoolName: 'aa',
+          address: 'shanxi'
+        }
+      },
+      methods: {
+        showName() {
+          console.log(this.schoolName)
+        }
+      }
+    })
+
+    const student = Vue.extend({
+      template: `
+      <div>
+        <div>学生 {{studentName}}</div>
+        <div>学生 {{age}}</div>
+        <hr>
+        <school></school>
+      </div>
+      `,
+      data() {
+        return {
+          studentName: 'zs',
+          age: 12,
+        }
+      },
+      // student组件 注册到 school组件  (局部)
+      components: {
+        school: school
+      },
+    })
+
+    const hello = Vue.extend({
+      template: `
+      <div>
+        <div>hello</div>
+      </div>
+      `,
+    })
+
+    // app管理者 用于管理所有自定义组件 vm管理app
+    const app = Vue.extend({
+      template: `
+        <div class="app">
+          <hello></hello>
+          <student></student>
+        </div>
+      `,
+      components: {
+        hello: hello,
+        student: student,
+      },
+    })
+    // 注册全局 组件
+    Vue.component('hello',hello)
+
+    console.log(school)
+
+    new Vue({
+      // 可以替换掉 body中  
+      // template: '<app></app>',
+      el: '.app',
+      data: {
+        msg: 'nihao'
+      },
+      // 2 注册组件 (局部)
+      components: {
+        xuexiao: school,
+        xuesheng: student,
+        app,
+      }
+    });
+
+    new Vue({
+      el: '.app1',
+      data: {
+
+      }
+    })
+
+  </script>
+
+
+  
+
+</body>
+</html>

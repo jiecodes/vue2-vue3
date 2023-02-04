@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+</head>
+<body>
+  computed计算属性能做的 watch都可以做
+  
+  <div class="root">
+    <h2>{{ weather }}</h2> <hr> <br> <b>1</b>
+    <button @click="change">切换</button>
+    <b>{{number}}</b>
+    <button @click="number.a ++">number++</button>
+  </div>
+  <script>
+    const mv = new Vue({
+      el: '.root',
+      data: {
+        isShow: false,
+        hot: '热',
+        cold: '冷',
+        number: {
+          a: 0,
+          b: 0,
+          c: {
+            e: 100,
+          }
+        },
+      },
+      methods: {
+        change() {
+          this.isShow = !this.isShow
+        }
+      },
+      computed: {
+        weather() {
+          return this.isShow ? this.hot : this.cold
+        }
+      },
+      watch: {
+        // isShow: {
+        //   // immediate: true,    // 开始时调用
+        //   // deep: true,   // 可以监听多层级数据改变
+        //   handler(newValue, oldValue) {
+        //     console.log('.')
+        //   }
+        // },
+        // 简写   里面只有handler属性     没有 immediate deep
+        isShow(newValue, oldValue) {
+          console.log('.')
+        }
+      },
+    })
+    // 外面写 监听
+    // mv.$watch('isShow', {
+    //   // immediate: true,    // 开始时调用
+    //   // deep: true,   // 可以监听多层级数据改变
+    //   handler(newValue, oldValue) {
+    //     console.log('..')
+    //   }
+    // })
+    // 简写
+    // mv.$watch('isShow', function(newValue,oldValue) {
+    //   console.log('...')
+    // })
+  </script>
+</body>
+</html>

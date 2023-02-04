@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+  <style>
+    /* 属性选择器 */
+    [v-cloak] {
+      /* 隐藏 */
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  我们学过的指令
+    v-bind:单向绑定解析表达式，可简写为：xxx
+    v-model :双向数据绑定
+    v-for·→:遍历数组/对象/字符串
+    v-on…→：绑定事件监听，可简写为@
+    v-if →…：条件渲染(动态控制节点是否存存在)
+    v-else :条件渲染(动态控制节点是否存存在)
+    v-show :条件渲染(动态控制节点是否展示)
+
+  内置指令:
+    v-text指令:(无用)
+      1.作用：向其所在的节点中渲染文本内容。
+      2.与插值语法的区别:v-text会替换掉节点中的内容， {{xx}}则不会。
+    v-cloak指令(没有值): Vue实例创建完毕后 v-cloak会被Vue删除
+      1.本质是一个特殊属性，Vue实例创建完毕并接管容器后，会删掉v-cloak属性。
+      2.使用css配合v-cloak可以解决网速慢时页面展示出{{xxx}}的问题。
+    v-once指令:
+      1.v-once所在节点在初次动态渲染后，就视为静态内容了。
+      2.以后数据的改变不会引起v-once所在结构的更新，可以用于优化性能。
+    v-pre指令:
+      1.跳过其所在节点的编译过程。
+      2.可利用它跳过：没有使用指令语法、没有使用插值语法的节点，会加快编译。
+
+  自定义指令:
+    v-big函数何时会被调用？
+      1.指令与元素成功绑定时(一上来)。
+      2.指令所在的模板被重新解析时。
+    一、定义语法：
+      (1).局部指令:
+        new Vue({                         new Vue({
+          directives:{指令名:配置对象}  或   directives{指令名:回调函数}
+        })                                })
+      (2).全局指令
+        Vue.directive(指令名，配置对象) 或 Vue.directive(指令名，回调函数)
+    二、配置对象中常用的3个回调：
+      (1).bind:指令与元素成功绑定时调用。
+      (2).inserted:指令所在元素被插入页面时调用。
+      (3).update:指令所在模板结构被重新解析时调用。
+      
+
+      
+  <div class="app">
+    <br><br><br>
+    <div>你好,{{msg}}</div>
+    <!-- v-text绑定的内容,会替换div的内容 -->
+    <div v-text="msg">你好,</div>
+    <!-- 解析 html -->
+    <div v-html="msg"></div>
+    <!-- Vue实例创建完毕后 v-cloak会被Vue删除 -->
+    <div v-cloak >5秒后显示这个div 显示之前不会显示 msg vue源码引入放到这行代码下面 {{msg}}</div>
+    <!-- v-once 只能执行一次 -->
+    <div v-once>开始值{{ number}}</div>
+    <div>当前值{{ number}}</div>
+    <div @click="number++">点击 number +</div>
+    <!-- v-pre vue不解析 插值 点击事件  -->
+    <div v-pre>{{ bumber }}</div>
+
+    <!-- 自定义 指令 -->
+    <div>当前是n值 <span v-text="number"></span></div>
+    <div>n值放大10倍 <span v-big-number="number"></span> </div>
+    <button @click="number++">点我+ 1</button>
+    <!-- js实现:页面打开获取焦点       autofocus 获取焦点 --> 
+    <input type="text" v-fbind:value='number' >
+  </div>
+  <script>
+    // 全局 自定义指令
+    Vue.directive('fbind',{
+      // 指令与元素成功绑定时
+      bind(element,binging) {
+        element.value = binging.value
+      },
+      // 指令所在元素被插入页面时
+      inserted(element,binging) {
+        // 获取焦点
+        element.focus()
+      },
+      // 指令所在的模板被重新解析时
+      update(element,binging) {
+        // 重新解析时 重新获取数据 不然数据不会显示
+        element.value = binging.value
+      },
+    })
+    Vue.directive('big-number',function(element,binging) {
+      element.innerText = binging.value * 10
+      console.log(element,binging, binging.value, this)
+    })
+
+
+
+    new Vue({
+      el: '.app',
+      data: {
+        msg: '<h5>nihao</h5>',
+        number: 1,
+      },
+
+      // 自定义指令 修改data中所有的值 都会调用big方法
+      directives: {
+        // 数字增加 10倍   
+        // "big-number":function(element,binging) {
+        //   element.innerText = binging.value * 10
+        //   console.log(element,binging, binging.value, this)
+        // },
+        // 绑定数据同时 获取焦点    函数简写 (这个案例中 出现执行先后问题)
+        // fbind( element,binging ) {
+        //   element.value = binging.value
+        //   element.focus()
+        // },
+        // 完整写法
+        // fbind: {
+        //   // 指令与元素成功绑定时
+        //   bind(element,binging) {
+        //     element.value = binging.value
+        //   },
+        //   // 指令所在元素被插入页面时
+        //   inserted(element,binging) {
+        //     // 获取焦点
+        //     element.focus()
+        //   },
+        //   // 指令所在的模板被重新解析时
+        //   update(element,binging) {
+        //     // 重新解析时 重新获取数据 不然数据不会显示
+        //     element.value = binging.value
+        //   },
+        // }
+      }
+    })
+  </script>
+
+  
+</body>
+</html>

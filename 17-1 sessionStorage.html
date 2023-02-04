@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  sessionStorage 浏览器关闭 数据消失
+  <button onclick="storageData()">点击存储数据</button>
+  <button onclick="readData()">点击读取数据</button>
+  <button onclick="removeData()">点击删除数据</button>
+  <button onclick="clearData()">点击清空数据</button>
+  <script>
+    function storageData() {
+      let person = { name: '张三', age: 18}
+      sessionStorage.setItem('a','aa')
+      // 把对象变成 字符串   JSON.stringify(person)     默认会调用 person.toString()方法
+      sessionStorage.setItem('person',JSON.stringify(person))
+    }
+    function readData() {
+      console.log(sessionStorage.getItem('a'))
+      const result = sessionStorage.getItem('person')
+      console.log(JSON.parse(result))
+      console.log(sessionStorage.getItem('b'))    // null
+    }
+    function removeData() {
+      sessionStorage.removeItem('a')
+      sessionStorage.removeItem('person')
+    }
+    function clearData() {
+      sessionStorage.clear()
+    }
+  </script>
+</body>
+</html>

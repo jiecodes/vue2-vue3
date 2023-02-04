@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+<body>
+  keydown 按下没有抬起按键
+  keyup 键盘抬起触发 
+
+  .enter(按下回车 触发事件)
+  删除 => delete (捕获“删除”和“退格”键)
+  退出 => esc
+  空格 => space
+  换行 => tab (配合 keydown 按下)
+  上=> up 
+  下 => down 
+  左=> left
+  右 => right
+
+  <div class="app">
+    <input type="text" placeholder="键盘抬起触发 回车按键编码" @keyup.enter="keyup">
+    <input type="text" placeholder="键盘抬起触发 回车按键编码" @keyup="keyup">
+  </div>
+  <script>
+    new Vue({
+      el: '.app',
+      data: {},
+      methods: {
+        keyup(e) {
+          console.log(e)
+          console.log(e.keyCode + ' 按键编码')
+          console.log(e.key + ' 按键名字')
+          // if( e.keyCode !== 13) return    // 13是回车 按键编码
+          console.log(e.target.value + '输入值')
+        }
+      },
+    })
+  </script>
+</body>
+</html>

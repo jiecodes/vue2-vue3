@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.7.14/dist/vue.js"></script>
+<body>
+  点击修改数据后 数据已经修改了 但是vue并没有检测到 页面没有改变
+  响应式的数据(数据改变,页面的数据也改变) vm._data中必须有get() set()
+
+  // console 页面输入这个 不是响应式的
+  // vm._data.student.sex === 'nan'
+  // console 响应式的修改 可以通过 Vue
+  // Vue.set('vm._data.student','sex','nan')
+  // vm.$set('vm._data.student','sex','nan')
+<div class="app">
+  <ul>
+    <!-- :key='item.id' 效率高(复用数据节点)  input 输入值 切换顺序 值会跟着那个数据改变 -->
+    <li v-for="(item, index) in persons" :key='item.id'>
+      {{item.name}} - {{item.age}}
+    </li>
+  </ul>
+  <button @click="changeInfo">修改数据</button>
+  <button @click='changeSex'>修改马冬梅 年龄</button>
+    
+</div>
+<script>
+  let vm = new Vue({
+    el: '.app',
+    data: {
+      persons: [
+      {id:'001',name:'马冬梅',age:30, sex: 'nan'},
+      {id:'002',name:'周冬雨',age:20, sex: 'nan'},
+      {id:'003',name:'周杰伦',age:21, sex: 'nv'},
+      {id:'004',name:'温兆伦',age:22, sex: 'nan'}
+      ],
+      student: {
+        name: 'andy',
+        age: 12,
+      }
+    },
+    methods: {
+      changeInfo() {
+        // 直接修改数据 索引值修改   页面不是响应式的  
+        // this.persons[0] = {id:'001',name:'马梅',age:130, sex: 'nan1'}
+
+        // 页面响应式的
+        this.persons.splice(0,1,{id:'001',name:'马梅',age:130, sex: 'nan1'})
+        console.log(vm)
+      },
+      changeSex() {
+        this.persons[0].age = 1
+      },
+    },  
+  })
+</script>
+
+
+
+</body>
+</html>

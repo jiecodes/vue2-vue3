@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    let perosn = {
+      name: '张三',
+      age: 12,
+    }
+    // vue3实现对象类型响应式
+    let p = new Proxy(perosn, {
+      get() {},
+      // 读取   target 表示person    propName 修改的属性名字   p.name
+      set(target, propName, value) {
+        console.log(`${propName}修改了,`)
+        target[propName] = value
+        // 通过vue3源码反射对象 修改数据
+        // Reflect.set(target,propName,value)
+      },
+    })
+  </script>
+</body>
+</html>

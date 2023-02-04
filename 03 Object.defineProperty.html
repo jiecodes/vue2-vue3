@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div></div>
+  <script>
+    let number = 18;
+    let obj = {
+      a: 'andy',
+      b: 1,
+      // age: number,
+    }
+    // obj给哪个对象添加  age添加什么属性  value添加的值  这样添加的值不可枚举(遍历)
+    Object.defineProperty(obj, 'age', {
+      // value: '11',
+      // enumerable: true,     // 控制可以枚举 默认为false
+      // writable: true,     // 控制属性是否可以被修改 默认为false 
+      // configurable: true,     // 控制属性是否可以被删除 默认为false
+
+      // 修改 number = 20后 obj里面的age没有跟着改变
+      // 解决: 读取obj里面的age属性 get(getter)就会被调用 返回的值就是age的值 number = 1
+      get:function() {
+        console.log('读取数据');
+        return number
+      },
+      // 修改 obj里面的age属性 set(setter)就会别调用 收到修改的值
+      set:function(value) {
+        console.log('修改数据 ' + value)
+        number = value
+      }
+    })
+    console.log(obj)
+  </script>
+</body>
+</html>

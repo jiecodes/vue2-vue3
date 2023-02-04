@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .color {
+      background-color: red;
+    }
+  </style>
+</head>
+<body>
+  <div>点击展示输入框</div>
+  <script>
+    const div = document.querySelector('div')
+    div.addEventListener('click', ()=> {
+      const input = document.createElement('input')
+      input.value = 1
+      input.className = 'color'
+      
+      document.body.appendChild(input)
+      // div.appendChild(input)
+
+      // input获取焦点
+      input.focus();
+      // 父元素 样式
+      input.parentElement.style.backgroundColor = 'skyblue'
+    })
+  </script>
+</body>
+</html>
